@@ -8,7 +8,8 @@
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/IvanBoyko/WixAutoHarvest.git</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Wix auto-harvesting during MSI build</description>
+	<title>Wix auto-harvesting during MSI build</title>
+    <description>Wix auto-harvesting during MSI build. Install this NuGet package to your Wix project (.wixproj) and create a reference to the project to be packaged - no need to list files in Wix!</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>MSI Wix MsBuild</tags>
