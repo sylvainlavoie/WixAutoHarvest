@@ -13,4 +13,7 @@
     <copyright>Copyright 2017</copyright>
     <tags>MSI Wix MsBuild</tags>
   </metadata>
+  <files>
+    <file src="build\**" />
+  </files>
 </package>
