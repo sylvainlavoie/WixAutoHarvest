@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>WixAutoHarvest</id>
-    <version>1.0.3</version>
+    <id>WixAutoHarvest.ConsoleApp</id>
+    <version>1.0.4</version>
     <authors>IvanBoyko</authors>
     <owners>IvanBoyko</owners>
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/IvanBoyko/WixAutoHarvest.git</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<title>Wix auto-harvesting during build</title>
-	<summary>Wix auto-harvesting during build of the Wix project</summary>
+	<title>Wix auto-harvesting during build - for console apps</title>
+	<summary>Wix auto-harvesting during build of the Wix project - for console apps (e.g. Windows services)</summary>
     <description>See usage info here: https://github.com/IvanBoyko/WixAutoHarvest#usage</description>
-    <releaseNotes>Split MsBuild script in preparation for breaking down to multiple NuGet packages per project type (Web, console app etc)</releaseNotes>
+    <releaseNotes>Renamed the NuGet package to be specific for console apps project types</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>MSI Wix MsBuild</tags>
   </metadata>
   <files>
     <file src="build\WixAutoHarvest.Common.msbuild" target="build" />
-    <file src="build\WixAutoHarvest.targets" target="build" />
+    <file src="build\WixAutoHarvest.ConsoleApp.targets" target="build" />
   </files>
 </package>
