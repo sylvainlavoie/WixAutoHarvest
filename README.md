@@ -7,9 +7,10 @@ See role in the build process:
 
 # Usage
 
-1) Install NuGet package [WixAutoHarvest][1] to your Wix project (.wixproj)
+1) In your Wix project (.wixproj) Install a NuGet package - depending on the type of a project being packaged to MSI use:
+- for console apps: https://www.nuget.org/packages/WixAutoHarvest.ConsoleApp
 
-2) In your Wix project Add a reference to the project to be packaged
+2) In your Wix project Add a reference to the project to be packaged to MSI
 
 3) In **Product.wxs** add ComponentGroup **include_cg** to a Feature, see example:
 ```
@@ -42,6 +43,3 @@ See role in the build process:
 2. Package locally by: ```nuget pack```
 3. Install locally to a Wix project and test that it builds
 4. Once happy, package and publish by running: ```nuget-pack-and-push.bat```
-
-
-[1]: https://www.nuget.org/packages/WixAutoHarvest
