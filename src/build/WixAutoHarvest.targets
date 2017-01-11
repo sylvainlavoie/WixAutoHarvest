@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup>
-	<InstallerProject_ObjDir>$(MSBuildProjectDirectory)\$(IntermediateOutputPath)</InstallerProject_ObjDir> <!-- standard intermediate dir for VS projects, usually obj\Debug or obj\Release -->
-	<HarvestDir Condition="'$(HarvestDir)' == ''">$(InstallerProject_ObjDir)\H</HarvestDir> <!-- intermediate location where to create dir structure to be deployed, short "H" is to fit Windows limit of 254 chars -->
-	<HarvestedWixSource>$(InstallerProject_ObjDir)\include.wxs</HarvestedWixSource>
-	<ReferencedProjectPlatform Condition="'$(ReferencedProjectPlatform)' == ''">AnyCPU</ReferencedProjectPlatform>
-  </PropertyGroup>
-
+  <Import Project="WixAutoHarvest.Common.msbuild" />
 
   <!-- We extend $(BuildDependsOn) with our target to auto-harvest dependent project
   It's better than redefining <BeforeBuild> target which can be already defined in parent .wixproj
@@ -17,88 +11,6 @@
       PublishAndHarvestReferencedProject;
       $(BuildDependsOn);
     </BuildDependsOn>
-	<CleanDependsOn>
-	  $(CleanDependsOn);
-	  CleanMyIntermediateFiles;
-	</CleanDependsOn>
   </PropertyGroup>
 
-  
-  <!-- Top-level targets, to be called depending on the type of referenced project(s) -->
-  <Target Name="PackageAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; CleanMyIntermediateFiles; PackageReferencedProject; HarvestDirectory" /> <!-- for web apps -->
-
-  <Target Name="PublishAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; CleanMyIntermediateFiles; PublishReferencedProject; HarvestDirectory" /> <!-- for console apps -->
-
-  <Target Name="ResolveAndHarvestReferencedProjects" DependsOnTargets="CleanMyIntermediateFiles; ResolveReferencedProjects; HarvestDirectory" /> <!-- for test projects -->
-
-  
-  <Target Name="CleanMyIntermediateFiles">
-	<RemoveDir Directories="$(HarvestDir)" Condition="Exists($(HarvestDir))" />
-	<Delete Files="$(HarvestedWixSource)" Condition="Exists($(HarvestedWixSource))" />
-  </Target>
-  
-  <!-- for simplicity of this library we allow to package only one project,
-  otherwise it would be quite complex to target each project to its own INSTALLFOLDER and generate its own ComponentGroup id (include_cg)
-  it's for web and console apps only, as for test projects we install them all together in the same folder, so can reference multiple projects -->
-  <Target Name="CheckSingleProject">
-    <Error Text="ERROR: must reference a single project" Condition="'@(ProjectReference-&gt;Count())' != 1" />
-    <Message Text="Packaging output of project @(ProjectReference)" />
-  </Target>
-
-  <Target Name="PackageReferencedProject">
-	<!-- we use Package target which is actually defined in WebDeploy and "knows" how to package all the web files required to run web application
-	* skipping generation of an unnecessary file: GenerateBuildInfoConfigFile=False
-	* avoiding AutoParameterizationWebConfigConnectionStrings, as we don't use VS .config transformations and want to keep .config files exactly as they come from version control, and modify them using Wix during installation according to Environment -->
-    <MSBuild Projects="@(ProjectReference)" Targets="Package" Properties="_PackageTempDir=$(HarvestDir);Platform=$(ReferencedProjectPlatform);GenerateBuildInfoConfigFile=False;AutoParameterizationWebConfigConnectionStrings=False" ContinueOnError="false" />
-  </Target>
-
-  <Target Name="PublishReferencedProject">
-	<!-- reusing VS functionality to create a "ClickOnce" application in the publish folder. This is equivalent to selecting the Publish command in the IDE, see MSDN for more information -->
-    <MSBuild Projects="@(ProjectReference)" Targets="Publish" Properties="PublishDir=$(HarvestDir)\\;Platform=$(ReferencedProjectPlatform)" ContinueOnError="false" />
-	
-	<!-- Potentially AssemblyName can be different from project name, we need to get it from referenced project, to reconstruct the path where project will be published, see HarvestDir below -->
-    <XmlPeek Namespaces="&lt;Namespace Prefix='msb' Uri='http://schemas.microsoft.com/developer/msbuild/2003'/&gt;"
-             XmlInputPath="%(ProjectReference.Identity)" 
-             Query="/msb:Project/msb:PropertyGroup/msb:AssemblyName/text()">
-      <Output TaskParameter="Result" ItemName="ReferencedProject_AssemblyName" />
-    </XmlPeek>
-    <Message Text="--- AssemblyName of the referenced project is: @(ReferencedProject_AssemblyName)"/>
-
-	<PropertyGroup>
-		<HarvestDir>$(HarvestDir)\Application Files\@(ReferencedProject_AssemblyName)_1_0_0_0</HarvestDir>
-	</PropertyGroup>
-  </Target>
-
-  <!-- for test projects its enough to just "resolve" them as references - this will copy all the assemblies and their dependencies in a single folder, from where they can be later called using test framework (e.g. NUnit) -->
-  <Target Name="ResolveReferencedProjects">
-    <Message Text="--- ResolveReferences: publishing to dir $(HarvestDir) ---" Importance="high" />
-	<!-- we can't use built-in <MSBuild> task as it will inherit information from the current MSBuild session that references projects were already resolved (not to a folder we need)
-	so we have to call it as an independent MSBuild command with correct OutDir -->
-    <Exec Command="&quot;$(MSBuildBinPath)\msbuild.exe&quot; /v:m /t:ResolveReferences &quot;/p:OutDir=$(HarvestDir)\\;Disable_CopyWebApplication=true&quot; &quot;$(MSBuildProjectFullPath)&quot;" />
-    <Message Text="--- ResolveReferences: finished" Importance="high" />
-  </Target>
-
-
-  <!-- Harvest prepared dir structure with heat.exe -->
-  <Target Name="HarvestDirectory">
-	<PropertyGroup>
-	  <DefineConstants>HarvestDir=$(HarvestDir);$(DefineConstants)</DefineConstants>
-	  <TransformArg Condition="'$(TransformFile)' != ''">-t &quot;$(ProjectDir)$(TransformFile)&quot;</TransformArg> <!-- if TransformFile property is defined, pass it as a .xslt file to heat.exe to alter generated file accordingly -->
-	</PropertyGroup>
-
-    <Message Text="Harvesting directory" />
-	<!-- here are 2 points of contact with main Product.wxs file:
-		* -cg include_cg : ComponentGroup id that should included in <Feature> in the Product.wxs file to actually install harvested files
-		* -dr INSTALLFOLDER : Id of the folder defined in main .wxs file where the files will be installed under
-	-->
-    <Exec Command="&quot;$(WixToolPath)Heat.exe&quot; dir &quot;$(HarvestDir)&quot; -cg include_cg -dr INSTALLFOLDER -sreg -srd -var var.HarvestDir -wx -ag -sfrag $(TransformArg) -out &quot;$(HarvestedWixSource)&quot;" />
-
-	<!-- As harvested Wix file is generated, it can't be permanently included in Wix project,
-	so we have to add it to Compile item group on the fly to make sure it's build by candle.exe and light.exe together with other .wxs files in the project -->
-    <Message Text="Updating Compile item group with generated Wix file $(HarvestedWixSource)" />
-    <ItemGroup>
-      <Compile Include="$(HarvestedWixSource)" />
-    </ItemGroup>
-  </Target>
-  
 </Project>
