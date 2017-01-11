@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WixAutoHarvest</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>IvanBoyko</authors>
     <owners>IvanBoyko</owners>
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
@@ -15,6 +15,6 @@
     <tags>MSI Wix MsBuild</tags>
   </metadata>
   <files>
-    <file src="build\**" />
+    <file src="build\**" target="build" />
   </files>
 </package>
