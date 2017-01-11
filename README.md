@@ -1,15 +1,17 @@
 # Purpose
 
-MsBuild helper for Wix auto-harvesting during build.
+MsBuild helper for Wix auto-harvesting (using heat.exe) during build.
 
 See role in the build process:
 ![WixAutoHarvest in the build process](https://github.com/IvanBoyko/WixAutoHarvest/blob/master/images/WixCommon-as-part-of-the-build.png)
 
 # Usage
 
-1) Install NuGet package [WixAutoHarvest][1]
+1) Install NuGet package [WixAutoHarvest][1] to your Wix project (.wixproj)
 
-2) In **Product.wxs** add ComponentGroup **include_cg** to a Feature, see example:
+2) In your Wix project Add a reference to the project to be packaged
+
+3) In **Product.wxs** add ComponentGroup **include_cg** to a Feature, see example:
 ```
 <Feature ...>
 	...

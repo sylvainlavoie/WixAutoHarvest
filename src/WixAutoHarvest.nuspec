@@ -2,19 +2,21 @@
 <package >
   <metadata>
     <id>WixAutoHarvest</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>IvanBoyko</authors>
     <owners>IvanBoyko</owners>
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/IvanBoyko/WixAutoHarvest.git</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<title>Wix auto-harvesting during MSI build</title>
-    <description>Wix auto-harvesting during MSI build. Install this NuGet package to your Wix project (.wixproj) and create a reference to the project to be packaged - no need to list files in Wix!</description>
-    <releaseNotes>Made sure auto-harvesting is actually called before the build. Also added cleanup of own intermediate files.</releaseNotes>
+	<title>Wix auto-harvesting during build</title>
+	<summary>Wix auto-harvesting during build of the Wix project</summary>
+    <description>See usage info here: https://github.com/IvanBoyko/WixAutoHarvest#usage</description>
+    <releaseNotes>Split MsBuild script in preparation for breaking down to multiple NuGet packages per project type (Web, console app etc)</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>MSI Wix MsBuild</tags>
   </metadata>
   <files>
-    <file src="build\**" target="build" />
+    <file src="build\WixAutoHarvest.Common.msbuild" target="build" />
+    <file src="build\WixAutoHarvest.targets" target="build" />
   </files>
 </package>
