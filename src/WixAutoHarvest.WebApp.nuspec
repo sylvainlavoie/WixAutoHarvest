@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WixAutoHarvest.WebApp</id>
+    <version>1.0.4</version>
+    <authors>IvanBoyko</authors>
+    <owners>IvanBoyko</owners>
+    <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/IvanBoyko/WixAutoHarvest.git</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<title>Wix auto-harvesting during build - for web apps</title>
+	<summary>Wix auto-harvesting during build of the Wix project - for web apps</summary>
+    <description>See usage info here: https://github.com/IvanBoyko/WixAutoHarvest#usage</description>
+    <releaseNotes>Cloned .nuspec from ConsoleApp package - for Web App projects</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>MSI Wix MsBuild</tags>
+  </metadata>
+  <files>
+    <file src="build\WixAutoHarvest.Common.msbuild" target="build" />
+    <file src="build\WixAutoHarvest.WebApp.targets" target="build" />
+  </files>
+</package>
