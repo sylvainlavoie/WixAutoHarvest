@@ -27,30 +27,41 @@
 
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- We extend $(BuildDependsOn) with our target to auto-harvest dependent project
-  It's better than redefining <BeforeBuild> target which can be already defined in parent .wixproj
-  See: https://msdn.microsoft.com/en-us/library/ms366724.aspx?f=255&MSPPError=-2147217396#Overriding -->
-  <PropertyGroup>  
-    <BuildDependsOn>  
-        PublishAndHarvestReferencedProject;  
-        $(BuildDependsOn);  
-    </BuildDependsOn>  
-  </PropertyGroup>  
-
   <PropertyGroup>
 	<InstallerProject_ObjDir>$(MSBuildProjectDirectory)\$(IntermediateOutputPath)</InstallerProject_ObjDir> <!-- standard intermediate dir for VS projects, usually obj\Debug or obj\Release -->
 	<HarvestDir Condition="'$(HarvestDir)' == ''">$(InstallerProject_ObjDir)\H</HarvestDir> <!-- intermediate location where to create dir structure to be deployed, short "H" is to fit Windows limit of 254 chars -->
+	<HarvestedWixSource>$(InstallerProject_ObjDir)\include.wxs</HarvestedWixSource>
 	<ReferencedProjectPlatform Condition="'$(ReferencedProjectPlatform)' == ''">AnyCPU</ReferencedProjectPlatform>
+  </PropertyGroup>
+
+
+  <!-- We extend $(BuildDependsOn) with our target to auto-harvest dependent project
+  It's better than redefining <BeforeBuild> target which can be already defined in parent .wixproj
+  See: https://msdn.microsoft.com/en-us/library/ms366724.aspx?f=255&MSPPError=-2147217396#Overriding -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      PublishAndHarvestReferencedProject;
+      $(BuildDependsOn);
+    </BuildDependsOn>
+	<CleanDependsOn>
+	  $(CleanDependsOn);
+	  CleanMyIntermediateFiles;
+	</CleanDependsOn>
   </PropertyGroup>
 
   
   <!-- Top-level targets, to be called depending on the type of referenced project(s) -->
-  <Target Name="PackageAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; PackageReferencedProject; HarvestDirectory" /> <!-- for web apps -->
+  <Target Name="PackageAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; CleanMyIntermediateFiles; PackageReferencedProject; HarvestDirectory" /> <!-- for web apps -->
 
-  <Target Name="PublishAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; PublishReferencedProject; HarvestDirectory" /> <!-- for console apps -->
+  <Target Name="PublishAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; CleanMyIntermediateFiles; PublishReferencedProject; HarvestDirectory" /> <!-- for console apps -->
 
-  <Target Name="ResolveAndHarvestReferencedProjects" DependsOnTargets="ResolveReferencedProjects; HarvestDirectory" /> <!-- for test projects -->
+  <Target Name="ResolveAndHarvestReferencedProjects" DependsOnTargets="CleanMyIntermediateFiles; ResolveReferencedProjects; HarvestDirectory" /> <!-- for test projects -->
 
+  
+  <Target Name="CleanMyIntermediateFiles">
+	<RemoveDir Directories="$(HarvestDir)" Condition="Exists($(HarvestDir))" />
+	<Delete Files="$(HarvestedWixSource)" Condition="Exists($(HarvestedWixSource))" />
+  </Target>
   
   <!-- for simplicity of this library we allow to package only one project,
   otherwise it would be quite complex to target each project to its own INSTALLFOLDER and generate its own ComponentGroup id (include_cg)
@@ -68,7 +79,6 @@
   </Target>
 
   <Target Name="PublishReferencedProject">
-	<RemoveDir Directories="$(HarvestDir)" Condition="Exists($(HarvestDir))" />
 	<!-- reusing VS functionality to create a "ClickOnce" application in the publish folder. This is equivalent to selecting the Publish command in the IDE, see MSDN for more information -->
     <MSBuild Projects="@(ProjectReference)" Targets="Publish" Properties="PublishDir=$(HarvestDir)\\;Platform=$(ReferencedProjectPlatform)" ContinueOnError="false" />
 	
@@ -98,7 +108,6 @@
   <!-- Harvest prepared dir structure with heat.exe -->
   <Target Name="HarvestDirectory">
 	<PropertyGroup>
-	  <HarvestedWixSource>$(InstallerProject_ObjDir)\include.wxs</HarvestedWixSource>
 	  <DefineConstants>HarvestDir=$(HarvestDir);$(DefineConstants)</DefineConstants>
 	  <TransformArg Condition="'$(TransformFile)' != ''">-t &quot;$(ProjectDir)$(TransformFile)&quot;</TransformArg> <!-- if TransformFile property is defined, pass it as a .xslt file to heat.exe to alter generated file accordingly -->
 	</PropertyGroup>
