@@ -5,16 +5,30 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{9FB0B938-296E-480F-A4EF-A1672A6B24D0}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProject1", "SetupProject1\SetupProject1.wixproj", "{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Debug|x86.Build.0 = Debug|Any CPU
 		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{9FB0B938-296E-480F-A4EF-A1672A6B24D0}.Release|x86.Build.0 = Release|Any CPU
+		{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}.Debug|x86.ActiveCfg = Debug|x86
+		{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}.Debug|x86.Build.0 = Debug|x86
+		{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}.Release|Any CPU.ActiveCfg = Release|x86
+		{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}.Release|x86.ActiveCfg = Release|x86
+		{72FFD190-EECA-4159-986A-F8EC3B0F0A7A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
