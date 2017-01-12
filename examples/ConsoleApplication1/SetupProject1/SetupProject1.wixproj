@@ -29,6 +29,16 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleApplication1\ConsoleApplication1.csproj">
+      <Name>ConsoleApplication1</Name>
+      <Project>{9fb0b938-296e-480f-a4ef-a1672a6b24d0}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <Import Project="..\packages\WixAutoHarvest.ConsoleApp.1.0.4\build\WixAutoHarvest.ConsoleApp.targets" Condition="Exists('..\packages\WixAutoHarvest.ConsoleApp.1.0.4\build\WixAutoHarvest.ConsoleApp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
