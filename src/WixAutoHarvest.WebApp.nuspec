@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>WixAutoHarvest.WebApp</id>
     <version>1.0.4</version>
@@ -18,5 +18,6 @@
   <files>
     <file src="build\WixAutoHarvest.Common.msbuild" target="build" />
     <file src="build\WixAutoHarvest.WebApp.targets" target="build" />
+    <file src="readme.txt" />
   </files>
 </package>
