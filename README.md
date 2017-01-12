@@ -44,3 +44,8 @@ See role in the build process:
 2. Package locally by: ```nuget pack```
 3. Install locally to a Wix project and test that it builds
 4. Once happy, package and publish by running: ```nuget-pack-and-push.bat```
+
+
+# Further ideas
+
+1. Automate adding of a `<Feature>` with `<ComponentGroupRef Id="include_cg" />` to **Product.wxs** during NuGet package installation.
