@@ -10,6 +10,7 @@ See role in the build process:
 1) In your Wix project (.wixproj) Install a NuGet package - depending on the type of a project being packaged to MSI use:
 - for WPF \ Windows Forms apps: https://www.nuget.org/packages/WixAutoHarvest.ClickOnce
 - for Web apps: https://www.nuget.org/packages/WixAutoHarvest.WebDeploy
+- for console apps: https://www.nuget.org/packages/WixAutoHarvest.ResolveReferences
 
 2) In your Wix project Add a reference to the project to be packaged to MSI
 
