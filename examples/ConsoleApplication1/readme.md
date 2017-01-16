@@ -1,12 +1,10 @@
 
 # Description
-This is a simple example of console application packaged to MSI by Wix with auto-harvesting done by **WixAutoHarvest.ConsoleApp** NuGet package.
+This is a simple example of console application packaged to MSI by Wix with auto-harvesting done by **WixAutoHarvest.ClickOnce** NuGet package.
 
 This example has been:
 - created in VS 2015 Enterprise Update 3 with Wix Toolset 3.10
 - tested in VSTS build
-
-See the history of this folder to understand more.
 
 # Steps to reproduce
 
@@ -28,7 +26,7 @@ Steps:
 Steps:
 
 1. Right-click on the Wix project and choose Manage NuGet Packages...
-2. Browse nuget.org and find **WixAutoHarvest.ConsoleApp**
+2. Browse nuget.org and find **WixAutoHarvest.ClickOnce**
 3. Install it
 4. Right-click on the References node under Wix project and choose Add Reference...
 5. On Projects tab select ConsoleApplication1 and click Add
