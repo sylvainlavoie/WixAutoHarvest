@@ -50,3 +50,4 @@ See role in the build process:
 # Further ideas
 
 1. Automate adding of a `<Feature>` with `<ComponentGroupRef Id="include_cg" />` to **Product.wxs** during NuGet package installation.
+2. [BUG] Example ConsoleApplication1 won't build on a clean clone - fails with error "Unresolved reference to symbol 'WixComponentGroup:include_cg' in section 'Product:*'". However closing and reloading the whole solution helps.
