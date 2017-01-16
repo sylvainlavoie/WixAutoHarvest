@@ -8,7 +8,7 @@
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/IvanBoyko/WixAutoHarvest.git</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<title>Wix auto-harvesting during build - for console apps</title>
+	<title>Wix auto-harvest on build - for console apps</title>
 	<summary>Wix auto-harvesting during build of the Wix project - for console apps</summary>
     <description>See usage info here: https://github.com/IvanBoyko/WixAutoHarvest#usage</description>
     <releaseNotes>Initial version of a package that uses ResolveReferences as a publish mechanism</releaseNotes>

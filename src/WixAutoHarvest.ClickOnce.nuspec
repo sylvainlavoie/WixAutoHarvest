@@ -8,7 +8,7 @@
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/IvanBoyko/WixAutoHarvest.git</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-	<title>Wix auto-harvesting during build - for WPF \ Windows Forms apps</title>
+	<title>Wix auto-harvest on build - for WPF \ Windows Forms apps</title>
 	<summary>Wix auto-harvesting during build of the Wix project - for WPF \ Windows Forms apps</summary>
     <description>See usage info here: https://github.com/IvanBoyko/WixAutoHarvest#usage</description>
     <releaseNotes>Renamed NuGet packages to be more specific about technology used to publish files prior to harvesting</releaseNotes>
