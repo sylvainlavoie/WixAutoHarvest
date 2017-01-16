@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>WixAutoHarvest.ResolveReferences</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <authors>IvanBoyko</authors>
     <owners>IvanBoyko</owners>
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
@@ -11,7 +11,11 @@
 	<title>Wix auto-harvest on build - for console apps</title>
 	<summary>Wix auto-harvesting during build of the Wix project - for console apps</summary>
     <description>See usage info here: https://github.com/IvanBoyko/WixAutoHarvest#usage</description>
-    <releaseNotes>Initial version of a package that uses ResolveReferences as a publish mechanism</releaseNotes>
+    <releaseNotes>
+		Skipped code analysis, to save build time and avoid files *.lastcodeanalysissucceeded and CodeAnalysisLog.xml in the MSI.
+		Set DebugSymbols=false to avoid .pdb files created and packaged to MSI.
+		Shortened title so it fits header on nuget.org page.
+	</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>MSI Wix MsBuild</tags>
   </metadata>
