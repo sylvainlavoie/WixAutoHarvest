@@ -3,6 +3,7 @@
 MsBuild helper for Wix auto-harvesting (using heat.exe) during build.
 
 See role in the build process:
+
 ![WixAutoHarvest in the build process](\images/WixAutoHarvest-as-part-of-the-build.png)
 
 # Usage
@@ -43,7 +44,7 @@ See role in the build process:
 ## Dev cycle
 1. Make changes
 2. Package locally by: ```nuget pack```
-3. Install locally to a Wix project and test that it builds
+3. Install locally to a Wix project (add local folder with .nupkg as NuGet feed) and test that it builds
 4. Once happy, package and publish by running: ```nuget-pack-and-push.bat```
 
 
