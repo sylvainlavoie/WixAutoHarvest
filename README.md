@@ -3,7 +3,7 @@
 MsBuild helper for Wix auto-harvesting (using heat.exe) during build.
 
 See role in the build process:
-![WixAutoHarvest in the build process](https://github.com/IvanBoyko/WixAutoHarvest/blob/master/images/WixAutoHarvest-as-part-of-the-build.png)
+![WixAutoHarvest in the build process](\images/WixAutoHarvest-as-part-of-the-build.png)
 
 # Usage
 
