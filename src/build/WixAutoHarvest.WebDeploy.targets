@@ -13,4 +13,15 @@
     </BuildDependsOn>
   </PropertyGroup>
 
+
+  <Target Name="PackageAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; CleanMyIntermediateFiles; PackageReferencedProject; HarvestDirectory" /> <!-- for web apps -->
+
+  <Target Name="PackageReferencedProject">
+	<!-- we use Package target which is actually defined in WebDeploy and "knows" how to package all the web files required to run web application
+	* skipping generation of an unnecessary file: GenerateBuildInfoConfigFile=False
+	* avoiding AutoParameterizationWebConfigConnectionStrings, as we don't use VS .config transformations and want to keep .config files exactly as they come from version control, and modify them using Wix during installation according to Environment -->
+    <MSBuild Projects="@(ProjectReference)" Targets="Package" Properties="_PackageTempDir=$(HarvestDir);Platform=$(ReferencedProjectPlatform);GenerateBuildInfoConfigFile=False;AutoParameterizationWebConfigConnectionStrings=False" ContinueOnError="false" />
+  </Target>
+
+
 </Project>

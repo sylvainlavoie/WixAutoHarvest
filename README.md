@@ -50,7 +50,6 @@ See role in the build process:
 
 # Further ideas
 
-* Better split **WixAutoHarvest.Common.msbuild** - move technology-specific (ClickOnce, WebDeploy, ResolveReferences) code to **\*.targets** files
 * Automate adding of a `<Feature>` with `<ComponentGroupRef Id="include_cg" />` to **Product.wxs** during NuGet package installation.
 * [BUG] Example ConsoleApplication1 won't build on a clean clone - fails with error "Unresolved reference to symbol 'WixComponentGroup:include_cg' in section 'Product:*'". However closing and reloading the whole solution helps.
 * Consider using `<RefTargetDir>` from **.wixproj** instead of hard-coded **INSTALLFOLDER**. This potentially will allow to reference multiple projects to install them to separate directories. See also Rob's explanation about original harvesting feature and its use of RefTargetDir here: http://stackoverflow.com/a/15578516/902415

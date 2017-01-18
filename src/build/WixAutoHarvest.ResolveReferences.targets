@@ -13,4 +13,16 @@
     </BuildDependsOn>
   </PropertyGroup>
 
+  
+  <Target Name="ResolveAndHarvestReferencedProjects" DependsOnTargets="CleanMyIntermediateFiles; ResolveReferencedProjects; HarvestDirectory" />
+
+  <!-- for test projects its enough to just "resolve" them as references - this will copy all the assemblies and their dependencies in a single folder, from where they can be later called using test framework (e.g. NUnit) -->
+  <Target Name="ResolveReferencedProjects">
+    <Message Text="--- ResolveReferences: publishing to dir $(HarvestDir) ---" Importance="high" />
+	<!-- we can't use built-in <MSBuild> task as it will inherit information from the current MSBuild session that references projects were already resolved (not to a folder we need)
+	so we have to call it as an independent MSBuild command with correct OutDir -->
+    <Exec Command="&quot;$(MSBuildBinPath)\msbuild.exe&quot; /v:m /t:ResolveReferences &quot;/p:OutDir=$(HarvestDir)\\;Disable_CopyWebApplication=true;RunCodeAnalysisOnThisProject=false;DebugSymbols=false&quot; &quot;$(MSBuildProjectFullPath)&quot;" />
+    <Message Text="--- ResolveReferences: finished" Importance="high" />
+  </Target>
+
 </Project>
