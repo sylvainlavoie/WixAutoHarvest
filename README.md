@@ -48,7 +48,7 @@ See role in the build process:
 4. Once happy, package and publish by running: ```nuget-pack-and-push.bat```
 
 
-# Further ideas
+# TODO
 
 * Automate adding of a `<Feature>` with `<ComponentGroupRef Id="include_cg" />` to **Product.wxs** during NuGet package installation.
 * [BUG] Example ConsoleApplication1 won't build on a clean clone - fails with error "Unresolved reference to symbol 'WixComponentGroup:include_cg' in section 'Product:*'". However closing and reloading the whole solution helps.
