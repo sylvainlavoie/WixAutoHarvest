@@ -5,7 +5,7 @@
 	<InstallerProject_ObjDir>$(MSBuildProjectDirectory)\$(IntermediateOutputPath)</InstallerProject_ObjDir> <!-- standard intermediate dir for VS projects, usually obj\Debug or obj\Release -->
 	<HarvestDir Condition="'$(HarvestDir)' == ''">$(InstallerProject_ObjDir)\H</HarvestDir> <!-- intermediate location where to create dir structure to be deployed, short "H" is to fit Windows limit of 254 chars -->
 	<HarvestedWixSource>$(InstallerProject_ObjDir)\include.wxs</HarvestedWixSource>
-	<ReferencedProjectPlatform Condition="'$(ReferencedProjectPlatform)' == ''">AnyCPU</ReferencedProjectPlatform>
+	<ReferencedProjectPlatform Condition="'$(ReferencedProjectPlatform)' == ''">$(Platform)</ReferencedProjectPlatform>
   </PropertyGroup>
 
   <PropertyGroup>

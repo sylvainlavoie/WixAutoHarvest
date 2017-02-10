@@ -21,7 +21,7 @@
     <Message Text="--- ResolveReferences: publishing to dir $(HarvestDir) ---" Importance="high" />
 	<!-- we can't use built-in <MSBuild> task as it will inherit information from the current MSBuild session that references projects were already resolved (not to a folder we need)
 	so we have to call it as an independent MSBuild command with correct OutDir -->
-    <Exec Command="&quot;$(MSBuildBinPath)\msbuild.exe&quot; /v:m /t:ResolveReferences &quot;/p:OutDir=$(HarvestDir)\\;Disable_CopyWebApplication=true;RunCodeAnalysisOnThisProject=false;DebugSymbols=false&quot; &quot;$(MSBuildProjectFullPath)&quot;" />
+    <Exec Command="&quot;$(MSBuildBinPath)\msbuild.exe&quot; /v:m /t:ResolveReferences &quot;/p:OutputPath=$(HarvestDir)\\;Disable_CopyWebApplication=true;RunCodeAnalysisOnThisProject=false;DebugSymbols=false;Platform=$(ReferencedProjectPlatform);Configuration=$(Configuration)&quot; &quot;$(MSBuildProjectFullPath)&quot;" />
     <Message Text="--- ResolveReferences: finished" Importance="high" />
   </Target>
 
