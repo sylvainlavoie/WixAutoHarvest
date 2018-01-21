@@ -1,0 +1,9 @@
+
+build_script:
+  - nuget pack src\WixAutoHarvest.ClickOnce.nuspec
+  - nuget pack src\WixAutoHarvest.WebDeploy.nuspec
+  - nuget pack src\WixAutoHarvest.ResolveReferences.nuspec
+  - nuget push *.nupkg -ApiKey %API_KEY% -Source https://api.nuget.org/v3/index.json
+
+artifacts:
+  - path: '*.nupkg'

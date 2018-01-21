@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/d975nxnx8yva9wt7?svg=true)](https://ci.appveyor.com/project/IvanBoyko/wixautoharvest)
+
 # Purpose
 
 MsBuild helper for Wix auto-harvesting (using heat.exe) during build.
@@ -41,15 +43,16 @@ See role in the build process:
 2. Get NuGet API key from your account on nuget.org
 3. Store API key locally: ```nuget setApiKey %API_KEY% -Source https://www.nuget.org/api/v2/package```
 
-## Dev cycle
+## Dev Cycle
 1. Make changes
 2. Package locally by: ```nuget pack```
 3. Install locally to a Wix project (add local folder with .nupkg as NuGet feed) and test that it builds
-4. Once happy, package and publish by running: ```nuget-pack-and-push.bat```
+4. Once happy, commit your change and push to GitHub, build and publishing to nuget.org is now automated by AppVeyor
 
 
 # TODO
 
+* Add testing stage to AppVeyor pipeline to automatically use the built package in a sample Wix project, and only publish it if test succeeded (see Dev Cycle item 3 above)
 * Automate adding of a `<Feature>` with `<ComponentGroupRef Id="include_cg" />` to **Product.wxs** during NuGet package installation.
 * [BUG] Example ConsoleApplication1 won't build on a clean clone - fails with error "Unresolved reference to symbol 'WixComponentGroup:include_cg' in section 'Product:*'". However closing and reloading the whole solution helps.
 * Consider using `<RefTargetDir>` from **.wixproj** instead of hard-coded **INSTALLFOLDER**. This potentially will allow to reference multiple projects to install them to separate directories. See also Rob's explanation about original harvesting feature and its use of RefTargetDir here: http://stackoverflow.com/a/15578516/902415
