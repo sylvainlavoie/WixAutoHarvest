@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>WixAutoHarvest.ClickOnce</id>
-    <version>1.1.2</version>
+    <version>1.1.3-Beta-001</version>
     <authors>IvanBoyko</authors>
     <owners>IvanBoyko</owners>
     <licenseUrl>https://github.com/IvanBoyko/WixAutoHarvest/blob/master/LICENSE</licenseUrl>
@@ -19,5 +19,7 @@
     <file src="build\WixAutoHarvest.Common.msbuild" target="build" />
     <file src="build\WixAutoHarvest.ClickOnce.targets" target="build" />
     <file src="readme.txt" />
+    <file src="content\WixAutoHarvest_WebDeploy.xslt" target="content" />
+    <file src="content\WixAutoHarvest.props" target="content" />
   </files>
 </package>
