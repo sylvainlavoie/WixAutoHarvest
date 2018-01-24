@@ -2,26 +2,49 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-	<InstallerProject_ObjDir>$(MSBuildProjectDirectory)\$(IntermediateOutputPath)</InstallerProject_ObjDir> <!-- standard intermediate dir for VS projects, usually obj\Debug or obj\Release -->
-	<HarvestDir Condition="'$(HarvestDir)' == ''">$(InstallerProject_ObjDir)\H</HarvestDir> <!-- intermediate location where to create dir structure to be deployed, short "H" is to fit Windows limit of 254 chars -->
-	<HarvestedWixSource>$(InstallerProject_ObjDir)\include.wxs</HarvestedWixSource>
-	<ReferencedProjectPlatform Condition="'$(ReferencedProjectPlatform)' == ''">$(Platform)</ReferencedProjectPlatform>
+    <!-- standard intermediate dir for VS projects, usually obj\Debug or obj\Release -->
+    <InstallerProject_ObjDir>$(MSBuildProjectDirectory)\$(IntermediateOutputPath)</InstallerProject_ObjDir>
+    <!-- intermediate location where to create dir structure to be deployed, short "H" is to fit Windows limit of 254 chars -->
+    <HarvestDir Condition="'$(HarvestDir)' == ''">$(InstallerProject_ObjDir)\H</HarvestDir>
+    <HarvestedWixSource>$(InstallerProject_ObjDir)\include.wxs</HarvestedWixSource>
+    <ReferencedProjectPlatform Condition="'$(ReferencedProjectPlatform)' == ''">$(Platform)</ReferencedProjectPlatform>
   </PropertyGroup>
 
   <PropertyGroup>
-	<CleanDependsOn>
-	  $(CleanDependsOn);
-	  CleanMyIntermediateFiles;
-	</CleanDependsOn>
+    <!-- AutoHarvest default value -->
+    <AutoHarvest_ComponentGroupName Condition=" '$(AutoHarvest_ComponentGroupName)' == '' ">CmpGrp_$(OutputName.Replace(".","_"))</AutoHarvest_ComponentGroupName>
+    <AutoHarvest_DirectoryName Condition=" '$(AutoHarvest_DirectoryName)' == '' ">DIR_$(OutputName.ToUpper().Replace(".","_"))</AutoHarvest_DirectoryName>
+    <AutoHarvest_SupressCom Condition=" '$(AutoHarvest_SupressCom)' == '' ">true</AutoHarvest_SupressCom>
+    <AutoHarvest_SupressReg Condition=" '$(AutoHarvest_SupressReg)' == '' ">true</AutoHarvest_SupressReg>
+    <AutoHarvest_SupressRootDir Condition=" '$(AutoHarvest_SupressRootDir)' == '' ">true</AutoHarvest_SupressRootDir>
+    <AutoHarvest_AutoGuidCompile Condition=" '$(AutoHarvest_AutoGuidCompile)' == '' ">false</AutoHarvest_AutoGuidCompile>
+    <AutoHarvest_SupressVb6Com Condition=" '$(AutoHarvest_SupressVb6Com)' == '' ">true</AutoHarvest_SupressVb6Com>
+    <AutoHarvest_SupressGuidBracket Condition=" '$(AutoHarvest_SupressGuidBracket)' == '' ">true</AutoHarvest_SupressGuidBracket>
+    <AutoHarvest_GenerateGuidNow Condition=" '$(AutoHarvest_GenerateGuidNow)' == '' ">true</AutoHarvest_GenerateGuidNow>
+    <AutoHarvest_SupressFragment Condition=" '$(AutoHarvest_SupressFragment)' == '' ">true</AutoHarvest_SupressFragment>
+    
+    <AutoHarvest_WarningAsError Condition=" '$(AutoHarvest_WarningAsError)' == '' ">true</AutoHarvest_WarningAsError>
+</PropertyGroup>
+  
+
+  <PropertyGroup>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CleanMyIntermediateFiles;
+    </CleanDependsOn>
   </PropertyGroup>
-  
-  
+
+
   <!-- Clean own intermediate files -->
   <Target Name="CleanMyIntermediateFiles">
-	<RemoveDir Directories="$(HarvestDir)" Condition="Exists($(HarvestDir))" />
-	<Delete Files="$(HarvestedWixSource)" Condition="Exists($(HarvestedWixSource))" />
+    <ItemGroup>
+      <FilesToClean Include="$(HarvestDir)\**\*.*"/>
+    </ItemGroup>
+    <Delete Files="@(FilesToClean)" />
+    <RemoveDir Directories="$(HarvestDir)" Condition="Exists($(HarvestDir))" ContinueOnError="true" />
+    <Delete Files="$(HarvestedWixSource)" Condition="Exists($(HarvestedWixSource))" />
   </Target>
-  
+
   <!-- for simplicity of this library we allow to package only one project,
   otherwise it would be quite complex to target each project to its own INSTALLFOLDER and generate its own ComponentGroup id (include_cg)
   it's for web and console apps only, as for test projects we install them all together in the same folder, so can reference multiple projects -->
@@ -33,24 +56,52 @@
 
   <!-- Harvest prepared dir structure with heat.exe -->
   <Target Name="HarvestDirectory">
-	<PropertyGroup>
-	  <DefineConstants>HarvestDir=$(HarvestDir);$(DefineConstants)</DefineConstants>
-	  <TransformArg Condition="'$(TransformFile)' != ''">-t &quot;$(ProjectDir)$(TransformFile)&quot;</TransformArg> <!-- if TransformFile property is defined, pass it as a .xslt file to heat.exe to alter generated file accordingly -->
-	</PropertyGroup>
+    <PropertyGroup>
+      <DefineConstants>HarvestDir=$(HarvestDir);$(DefineConstants)</DefineConstants>
+      <TransformArg Condition="'$(AutoHarvest_TransformFile)' != ''">-t &quot;$(ProjectDir)$(AutoHarvest_TransformFile)&quot;</TransformArg>
+      <!-- if TransformFile property is defined, pass it as a .xslt file to heat.exe to alter generated file accordingly -->
+    </PropertyGroup>
 
-    <Message Text="Harvesting directory" />
-	<!-- here are 2 points of contact with main Product.wxs file:
+    <ItemGroup>
+      <HeatCmdArgs Remove="@(HeatCmdArgs)"/>
+      <HeatCmdArgs Include="&quot;$(WixToolPath)Heat.exe&quot;"/>
+      <HeatCmdArgs Include="dir &quot;$(HarvestDir)&quot;" />
+      <HeatCmdArgs Include="-cg $(AutoHarvest_ComponentGroupName)" />
+      <HeatCmdArgs Include="-dr $(AutoHarvest_DirectoryName)" Condition=" '$(AutoHarvest_DirectoryName)'!='' " />
+      <HeatCmdArgs Include="-var var.HarvestDir"  />
+      <HeatCmdArgs Include="-scom" Condition=" '$(AutoHarvest_SupressCom)' == 'true' " />
+      <HeatCmdArgs Include="-sreg" Condition=" '$(AutoHarvest_SupressReg)' == 'true' " />
+      <HeatCmdArgs Include="-srd" Condition=" '$(AutoHarvest_SupressRootDir)' == 'true' " />
+      <HeatCmdArgs Include="-ag" Condition=" '$(AutoHarvest_AutoGuidCompile)' == 'true' " />
+      <HeatCmdArgs Include="-svb6" Condition=" '$(AutoHarvest_SupressVb6Com)' == 'true' " />
+      <HeatCmdArgs Include="-g1" Condition=" '$(AutoHarvest_SupressGuidBracket)' == 'true' " />
+      <HeatCmdArgs Include="-gg" Condition=" '$(AutoHarvest_GenerateGuidNow)' == 'true' " />
+      <HeatCmdArgs Include="-wx" Condition=" '$(AutoHarvest_WarningAsError)' == 'true' " />
+
+      <HeatCmdArgs Include="-sfrag" Condition=" '$(AutoHarvest_SupressFragment)' == 'true' " />
+      <HeatCmdArgs Include="$(TransformArg)" Condition=" '$(TransformArg)'!='' AND '$(AutoHarvest_UseTransformXslt)' == 'true' " />
+      
+      <HeatCmdArgs Include="-out &quot;$(HarvestedWixSource)&quot;"  />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <HeatCmd>@(HeatCmdArgs->'%(Identity)',' ')</HeatCmd>
+    </PropertyGroup>
+
+    <Message Text="HeatCmdArgs: @(HeatCmdArgs)" Importance="normal"/>
+    <Message Text="Harvesting directory with command: $(HeatCmd)" Importance="high" />
+    <!-- here are 2 points of contact with main Product.wxs file:
 		* -cg include_cg : ComponentGroup id that should included in <Feature> in the Product.wxs file to actually install harvested files
 		* -dr INSTALLFOLDER : Id of the folder defined in main .wxs file where the files will be installed under
 	-->
-    <Exec Command="&quot;$(WixToolPath)Heat.exe&quot; dir &quot;$(HarvestDir)&quot; -cg include_cg -dr INSTALLFOLDER -sreg -srd -var var.HarvestDir -wx -ag -sfrag $(TransformArg) -out &quot;$(HarvestedWixSource)&quot;" />
+    <Exec Command="$(HeatCmd)" LogStandardErrorAsError="true"  />
 
-	<!-- As harvested Wix file is generated, it can't be permanently included in Wix project,
+    <!-- As harvested Wix file is generated, it can't be permanently included in Wix project,
 	so we have to add it to Compile item group on the fly to make sure it's build by candle.exe and light.exe together with other .wxs files in the project -->
     <Message Text="Updating Compile item group with generated Wix file $(HarvestedWixSource)" />
     <ItemGroup>
       <Compile Include="$(HarvestedWixSource)" />
     </ItemGroup>
   </Target>
-  
+
 </Project>
