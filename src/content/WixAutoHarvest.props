@@ -5,7 +5,8 @@
   
   <PropertyGroup>
     <AutoHarvest_NewProps>false</AutoHarvest_NewProps>
-    <AutoHarvest_NewProps>true</AutoHarvest_NewProps>
+    <!-- Set this property to true to enable new properties -->
+    <!-- <AutoHarvest_NewProps>true</AutoHarvest_NewProps> -->
   </PropertyGroup>
   
   
