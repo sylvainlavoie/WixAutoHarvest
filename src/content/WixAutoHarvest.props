@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- !!! Changes to this files will require the solution to be closed and reopened to take effect !!! -->
+  
+  <PropertyGroup>
+    <AutoHarvest_NewProps>false</AutoHarvest_NewProps>
+    <AutoHarvest_NewProps>true</AutoHarvest_NewProps>
+  </PropertyGroup>
+  
+  
+  <PropertyGroup Condition=" '$(AutoHarvest_NewProps)' == 'true' ">
+    <!-- AutoHarvest default Heat Harvesting values to harvest in custom folder and component.
+         Using this configuration allow to package multiple Harvested projects in a single MSI
+         
+         Each project is assigned to the folder: DIR_{project OUTPUTNAME} 
+         Each project harvested is assigned to a component group: CmpGrp_{project OutputName}
+         
+         ps: the '.' are replaced by '_' to make Wix properties less confusing 
+    -->
+    
+    <AutoHarvest_ComponentGroupName Condition=" '$(AutoHarvest_ComponentGroupName)' == '' ">CmpGrp_$(OutputName.Replace(".","_").Replace("-","_"))</AutoHarvest_ComponentGroupName>
+    <AutoHarvest_DirectoryName Condition=" '$(AutoHarvest_DirectoryName)' == '' ">DIR_$(OutputName.ToUpper().Replace(".","_").Replace("-","_"))</AutoHarvest_DirectoryName>
+    <AutoHarvest_SupressCom Condition=" '$(AutoHarvest_SupressCom)' == '' ">true</AutoHarvest_SupressCom>
+    <AutoHarvest_SupressReg Condition=" '$(AutoHarvest_SupressReg)' == '' ">true</AutoHarvest_SupressReg>
+    <AutoHarvest_SupressRootDir Condition=" '$(AutoHarvest_SupressRootDir)' == '' ">true</AutoHarvest_SupressRootDir>
+    <AutoHarvest_AutoGuidCompile Condition=" '$(AutoHarvest_AutoGuidCompile)' == '' ">false</AutoHarvest_AutoGuidCompile>
+    <AutoHarvest_SupressVb6Com Condition=" '$(AutoHarvest_SupressVb6Com)' == '' ">true</AutoHarvest_SupressVb6Com>
+    <AutoHarvest_SupressGuidBracket Condition=" '$(AutoHarvest_SupressGuidBracket)' == '' ">true</AutoHarvest_SupressGuidBracket>
+    <AutoHarvest_GenerateGuidNow Condition=" '$(AutoHarvest_GenerateGuidNow)' == '' ">true</AutoHarvest_GenerateGuidNow>
+    <AutoHarvest_SupressFragment Condition=" '$(AutoHarvest_SupressFragment)' == '' ">true</AutoHarvest_SupressFragment>
+    <AutoHarvest_TransformFile Condition=" '$(AutoHarvest_TransformFile)' == '' ">WixAutoHarvest_WebDeploy.xslt</AutoHarvest_TransformFile>
+    <AutoHarvest_UseTransformXslt Condition=" '$(AutoHarvest_UseTransformXslt)' == '' ">true</AutoHarvest_UseTransformXslt>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(AutoHarvest_NewProps)' == 'false' ">
+    <!-- Using this configuration will give original harvesting format
+    -->
+    <!-- here are 2 points of contact with main Product.wxs file:
+		* -cg include_cg : ComponentGroup id that should included in <Feature> in the Product.wxs file to actually install harvested files
+		* -dr INSTALLFOLDER : Id of the folder defined in main .wxs file where the files will be installed under
+	-->
+
+    <AutoHarvest_ComponentGroupName Condition=" '$(AutoHarvest_ComponentGroupName)' == '' ">include_cg</AutoHarvest_ComponentGroupName>
+    <AutoHarvest_DirectoryName Condition=" '$(AutoHarvest_DirectoryName)' == '' ">INSTALLFOLDER</AutoHarvest_DirectoryName>
+    <AutoHarvest_SupressCom Condition=" '$(AutoHarvest_SupressCom)' == '' ">false</AutoHarvest_SupressCom>
+    <AutoHarvest_SupressReg Condition=" '$(AutoHarvest_SupressReg)' == '' ">true</AutoHarvest_SupressReg>
+    <AutoHarvest_SupressRootDir Condition=" '$(AutoHarvest_SupressRootDir)' == '' ">true</AutoHarvest_SupressRootDir>
+    <AutoHarvest_AutoGuidCompile Condition=" '$(AutoHarvest_AutoGuidCompile)' == '' ">true</AutoHarvest_AutoGuidCompile>
+    <AutoHarvest_SupressVb6Com Condition=" '$(AutoHarvest_SupressVb6Com)' == '' ">false</AutoHarvest_SupressVb6Com>
+    <AutoHarvest_SupressGuidBracket Condition=" '$(AutoHarvest_SupressGuidBracket)' == '' ">false</AutoHarvest_SupressGuidBracket>
+    <AutoHarvest_GenerateGuidNow Condition=" '$(AutoHarvest_GenerateGuidNow)' == '' ">false</AutoHarvest_GenerateGuidNow>
+    <AutoHarvest_SupressFragment Condition=" '$(AutoHarvest_SupressFragment)' == '' ">true</AutoHarvest_SupressFragment>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AutoHarvestWeb_GenerateInfoConfig Condition=" '$(AutoHarvestWeb_GenerateInfoConfig)' == '' ">False</AutoHarvestWeb_GenerateInfoConfig>
+    <AutoHarvestWeb_ParamConString Condition=" '$(AutoHarvestWeb_ParamConString)' == '' ">False</AutoHarvestWeb_ParamConString>
+    <!-- Add any other required parameters in the form "Param=value;Param1=Value1" -->
+    <AutoHarvestWeb_AdditionalParameters Condition=" '$(AutoHarvestWeb_AdditionalParameters)' == '' "></AutoHarvestWeb_AdditionalParameters>
+  </PropertyGroup>
+
+</Project>
