@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <Import Project="$(ProjectDir)WixAutoHarvest.props"/>
+  
   <Import Project="WixAutoHarvest.Common.msbuild" />
+
+  <PropertyGroup>
+    <AutoHarvestWeb_GenerateInfoConfig Condition=" '$(AutoHarvestWeb_GenerateInfoConfig)' == '' ">False</AutoHarvestWeb_GenerateInfoConfig>
+    <AutoHarvestWeb_ParamConString Condition=" '$(AutoHarvestWeb_ParamConString)' == '' ">False</AutoHarvestWeb_ParamConString>
+    <AutoHarvestWeb_AdditionalParameters Condition=" '$(AutoHarvestWeb_AdditionalParameters)' == '' "></AutoHarvestWeb_AdditionalParameters>
+  </PropertyGroup>
 
   <!-- We extend $(BuildDependsOn) with our target to auto-harvest dependent project
   It's better than redefining <BeforeBuild> target which can be already defined in parent .wixproj
@@ -11,17 +19,41 @@
       PackageAndHarvestReferencedProject;
       $(BuildDependsOn);
     </BuildDependsOn>
+
+    <PackageAndHarvestReferencedProjectDependsOn>
+      CheckSingleProject; 
+      CleanMyIntermediateFiles; 
+      PackageReferencedProject; 
+      HarvestDirectory;
+    </PackageAndHarvestReferencedProjectDependsOn>
   </PropertyGroup>
 
 
-  <Target Name="PackageAndHarvestReferencedProject" DependsOnTargets="CheckSingleProject; CleanMyIntermediateFiles; PackageReferencedProject; HarvestDirectory" /> <!-- for web apps -->
+  <Target Name="PackageAndHarvestReferencedProject" 
+          DependsOnTargets="$(PackageAndHarvestReferencedProjectDependsOn)" /> <!-- for web apps -->
 
   <Target Name="PackageReferencedProject">
 	<!-- we use Package target which is actually defined in WebDeploy and "knows" how to package all the web files required to run web application
 	* skipping generation of an unnecessary file: GenerateBuildInfoConfigFile=False
 	* avoiding AutoParameterizationWebConfigConnectionStrings, as we don't use VS .config transformations and want to keep .config files exactly as they come from version control, and modify them using Wix during installation according to Environment -->
-    <MSBuild Projects="@(ProjectReference)" Targets="Package" Properties="_PackageTempDir=$(HarvestDir);Platform=$(ReferencedProjectPlatform);GenerateBuildInfoConfigFile=False;AutoParameterizationWebConfigConnectionStrings=False" ContinueOnError="false" />
+    <ItemGroup>
+      <PackageProperties Remove="@(PackageProperties)"/>
+      <PackageProperties Include="_PackageTempDir=$(HarvestDir)" />
+      <PackageProperties Include="Platform=$(ReferencedProjectPlatform)"  />
+      <PackageProperties Include="GenerateBuildInfoConfigFile=$(AutoHarvestWeb_GenerateInfoConfig)" Condition=" '$(AutoHarvestWeb_GenerateInfoConfig)' != '' " />
+      <PackageProperties Include="AutoParameterizationWebConfigConnectionStrings=$(AutoHarvestWeb_ParamConString)" Condition=" '$(AutoHarvestWeb_ParamConString)' != '' " />
+      <PackageProperties Include="$(AutoHarvestWeb_AdditionalParameters)" Condition=" '$(AutoHarvestWeb_AdditionalParameters)' != '' " />
+    </ItemGroup>
+    
+    
+    <MSBuild 
+      Projects="@(ProjectReference)" 
+      Targets="Package" 
+      Properties="@(PackageProperties)"
+      ContinueOnError="false" />
   </Target>
 
 
+  
+  
 </Project>
