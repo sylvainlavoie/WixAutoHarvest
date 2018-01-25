@@ -19,9 +19,12 @@
          
          ps: the '.' are replaced by '_' to make Wix properties less confusing 
     -->
+    <AutoHarvest_DefaultDirPrefix Condition=" '$(AutoHarvest_DefaultDirPrefix)' == '' ">DIR_</AutoHarvest_DefaultDirPrefix>
+    <AutoHarvest_DefaultCmpGrpPrefix Condition=" '$(AutoHarvest_DefaultCmpGrpPrefix)' == '' ">CmpGrp_</AutoHarvest_DefaultCmpGrpPrefix>
     
-    <AutoHarvest_ComponentGroupName Condition=" '$(AutoHarvest_ComponentGroupName)' == '' ">CmpGrp_$(OutputName.Replace(".","_").Replace("-","_"))</AutoHarvest_ComponentGroupName>
-    <AutoHarvest_DirectoryName Condition=" '$(AutoHarvest_DirectoryName)' == '' ">DIR_$(OutputName.ToUpper().Replace(".","_").Replace("-","_"))</AutoHarvest_DirectoryName>
+    <AutoHarvest_ComponentGroupName Condition=" '$(AutoHarvest_ComponentGroupName)' == '' ">$(AutoHarvest_DefaultCmpGrpPrefix)$(OutputName.Replace(".","_").Replace("-","_"))</AutoHarvest_ComponentGroupName>
+    <AutoHarvest_DirectoryName Condition=" '$(AutoHarvest_DirectoryName)' == '' ">$(AutoHarvest_DefaultDirPrefix)$(OutputName.ToUpper().Replace(".","_").Replace("-","_"))</AutoHarvest_DirectoryName>
+    
     <AutoHarvest_SupressCom Condition=" '$(AutoHarvest_SupressCom)' == '' ">true</AutoHarvest_SupressCom>
     <AutoHarvest_SupressReg Condition=" '$(AutoHarvest_SupressReg)' == '' ">true</AutoHarvest_SupressReg>
     <AutoHarvest_SupressRootDir Condition=" '$(AutoHarvest_SupressRootDir)' == '' ">true</AutoHarvest_SupressRootDir>

@@ -44,7 +44,8 @@
       <PackageProperties Include="AutoParameterizationWebConfigConnectionStrings=$(AutoHarvestWeb_ParamConString)" Condition=" '$(AutoHarvestWeb_ParamConString)' != '' " />
       <PackageProperties Include="$(AutoHarvestWeb_AdditionalParameters)" Condition=" '$(AutoHarvestWeb_AdditionalParameters)' != '' " />
     </ItemGroup>
-    
+
+    <Message Text="AutoHarvest PackageReferencedProject with properties: @(PackageProperties)" Condition="high"/>
     
     <MSBuild 
       Projects="@(ProjectReference)" 

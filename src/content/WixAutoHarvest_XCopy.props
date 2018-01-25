@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- !!! Changes to this files will require the solution to be closed and reopened to take effect !!! -->
+
+  <PropertyGroup>
+    <PrepareHarvestFolderStructureDependsOn>
+      <!-- Add any target do to XCopy deployment to dir: $(HarvestDir)-->
+      AutoHarvest_DemoXCopy;
+      $(PrepareHarvestFolderStructureDependsOn);
+    </PrepareHarvestFolderStructureDependsOn>
+  </PropertyGroup>
+
+  <Target Name="AutoHarvest_DemoXCopy">
+
+    <Message Text="Begin AutoHarvest_DemoXCopy target..." Importance="high" />
+    <Message Text="Add any XCopy deployment to dir: $(HarvestDir)" Importance="high"/>
+
+    <Message Text="Completed AutoHarvest_DemoXCopy target" Importance="high" />
+  </Target>
+  
+
+</Project>
