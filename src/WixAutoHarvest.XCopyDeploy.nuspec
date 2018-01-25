@@ -17,10 +17,10 @@
   </metadata>
   <files>
     <file src="build\WixAutoHarvest.Common.msbuild" target="build" />
-    <file src="build\WixAutoHarvest.XCopy.targets" target="build" />
+    <file src="build\WixAutoHarvest.XCopyDeploy.targets" target="build" />
     <file src="readme.txt" />
     <file src="content\WixAutoHarvest_WebDeploy.xslt" target="content" />
     <file src="content\WixAutoHarvest.props" target="content" />
-    <file src="content\WixAutoHarvest_XCopy.props" target="content" />
+    <file src="content\WixAutoHarvest_XCopyDeploy.props" target="content" />
   </files>
 </package>

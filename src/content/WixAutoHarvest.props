@@ -11,6 +11,7 @@
 
 
   <PropertyGroup>
+    <!-- By default if the Wix lib project is x86 select AnyCpu for the project -->
     <ReferencedProjectPlatform Condition=" '$(ReferencedProjectPlatform)' == '' AND '$(Platform)' == 'x86' ">AnyCPU</ReferencedProjectPlatform>
   </PropertyGroup>
   
