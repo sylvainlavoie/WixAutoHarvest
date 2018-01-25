@@ -45,7 +45,7 @@
       <PackageProperties Include="$(AutoHarvestWeb_AdditionalParameters)" Condition=" '$(AutoHarvestWeb_AdditionalParameters)' != '' " />
     </ItemGroup>
 
-    <Message Text="AutoHarvest PackageReferencedProject with properties: @(PackageProperties)" Condition="high"/>
+    <Message Text="AutoHarvest PackageReferencedProject with properties: @(PackageProperties)" Importance="high"/>
     
     <MSBuild 
       Projects="@(ProjectReference)" 
