@@ -6,7 +6,7 @@
  
   <Import Project="WixAutoHarvest.Common.msbuild" />
 
-  <Import Project="$(ProjectDir)WixAutoHarvest.XCopy.props"/>
+  
 
   <!-- We extend $(BuildDependsOn) with our target to auto-harvest dependent project
   It's better than redefining <BeforeBuild> target which can be already defined in parent .wixproj
@@ -37,5 +37,7 @@
     <Message Text="--- PrepareHarvestFolderStructure: Ready to harvest files deployed to dir $(HarvestDir) ---" Importance="high" />
 	
   </Target>
+
+  <Import Project="$(ProjectDir)WixAutoHarvest.XCopyDeploy.props"/>
 
 </Project>
