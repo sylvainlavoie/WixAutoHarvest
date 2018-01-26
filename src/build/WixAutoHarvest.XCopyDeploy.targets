@@ -38,6 +38,6 @@
 	
   </Target>
 
-  <Import Project="$(ProjectDir)WixAutoHarvest.XCopyDeploy.props"/>
+  <Import Project="$(ProjectDir)WixAutoHarvest_XCopyDeploy.props"/>
 
 </Project>
